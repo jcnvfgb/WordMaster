@@ -1,5 +1,6 @@
 package com.example.maing.Activity;
 
+import android.database.Cursor;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -15,14 +16,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.maing.Adapter.LanguageAdapter;
+import com.example.maing.DataBase.DatabaseHelper;
+import com.example.maing.Domain.LanguageModel;
 import com.example.maing.R;
 
 import java.util.ArrayList;
 
 public class DictionaryListActivity extends AppCompatActivity {
 
-    private RecyclerView.Adapter adapterDictionaryList;
+    private RecyclerView.Adapter adapterLanguageList;
     private RecyclerView recyclerViewDictionary;
+    DatabaseHelper noteHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,8 @@ public class DictionaryListActivity extends AppCompatActivity {
             return insets;
         });*/
 
-        //initRecyclerView();
+        noteHelper = new DatabaseHelper(this);
+        initRecyclerView();
 
         ConstraintLayout btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -62,18 +68,21 @@ public class DictionaryListActivity extends AppCompatActivity {
 
     }
 
-    /*private void initRecyclerView() {
-        ArrayList<DictionaryDomain> items = new ArrayList<>();
-        items.add(new DictionaryDomain("English", 12, "ic_1"));
-        items.add(new DictionaryDomain("Spanish", 49, "ic_2"));
-        items.add(new DictionaryDomain("Japanese", 557, "ic_3"));
+    private void initRecyclerView() {
+        ArrayList<LanguageModel> items = new ArrayList<>();
+
+        Cursor cursor = noteHelper.getAllLanguages();
+        while (cursor.moveToNext()) {
+            items.add(new LanguageModel(cursor.getString(1),
+                    cursor.getInt(0)));
+        }
 
         recyclerViewDictionary = findViewById(R.id.view);
         recyclerViewDictionary.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         );
 
-        adapterDictionaryList = new DictionaryAdapter(items);
-        recyclerViewDictionary.setAdapter(adapterDictionaryList);
-    }*/
+        adapterLanguageList = new LanguageAdapter(this, items);
+        recyclerViewDictionary.setAdapter(adapterLanguageList);
+    }
 }
