@@ -1,6 +1,7 @@
 package com.example.maing.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.maing.Activity.SettingUpSets;
 import com.example.maing.Domain.LanguageModel;
 import com.example.maing.R;
 
@@ -38,7 +40,6 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
         holder.title.setText(arrayList.get(position).getLanguage());
         //holder.quantityWord.setText("Word: " + arrayList.get(position).get_quantityWord());
 
-
         switch (position) {
             case 0:
                 holder.background_img.setImageResource(R.drawable.bg_1);
@@ -53,6 +54,16 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
                 holder.layout.setBackgroundResource(R.drawable.list_background_1);
                 break;
         }
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, SettingUpSets.class);
+                intent.putExtra("language", arrayList.get(position).getLanguage());
+                intent.putExtra("id", arrayList.get(position).getId_language());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
