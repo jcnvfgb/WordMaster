@@ -21,12 +21,15 @@ import com.example.maing.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 
 public class SettingUpSets extends AppCompatActivity {
     FloatingActionButton floatingId;
     RecyclerView recyclerView;
     ArrayList<SetModel> arrayList = new ArrayList<>();
     DatabaseHelper databaseHelper;
+    private static final int ADD_SET_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +46,14 @@ public class SettingUpSets extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         databaseHelper = new DatabaseHelper(this);
 
+        int id_len = getIntent().getIntExtra("id", 0);
         Cursor cursor = databaseHelper.getAllSets();
         while (cursor.moveToNext()) {
-            arrayList.add(new SetModel(cursor.getString(1),
-                    cursor.getInt(0),
-                    cursor.getInt(2)));
+            if (id_len == cursor.getInt(2)) {
+                arrayList.add(new SetModel(cursor.getString(1),
+                        cursor.getInt(0),
+                        cursor.getInt(2)));
+            }
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,8 +65,29 @@ public class SettingUpSets extends AppCompatActivity {
             public void onClick(View view) {
                 int id_len = getIntent().getIntExtra("id", 0);
                 Log.e("SettingUpSets", "id_language  " + id_len);
-                //startActivity(new Intent(SettingUpSets.this, MainActivity2.class));
+                Intent intent = new Intent(SettingUpSets.this, AddingNewSet.class);
+                intent.putExtra("id", id_len);
+                startActivityForResult(intent, ADD_SET_REQUEST_CODE);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_SET_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Обновите RecyclerView
+            arrayList.clear();
+            int id_len = getIntent().getIntExtra("id", 0);
+            Cursor cursor = databaseHelper.getAllSets();
+            while (cursor.moveToNext()) {
+                if (id_len == cursor.getInt(2)) {
+                    arrayList.add(new SetModel(cursor.getString(1),
+                            cursor.getInt(0),
+                            cursor.getInt(2)));
+                }
+            }
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 }
