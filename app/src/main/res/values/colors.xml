@@ -12,4 +12,6 @@
     <color name="blue_white_normal">#A9ECFF</color>
     <color name="deep_blue">#00AAFF</color>
     <color name="blue_normal_deep">#62DAFF</color>
+
+    <color name="orange">#ED8B00</color>
 </resources>
