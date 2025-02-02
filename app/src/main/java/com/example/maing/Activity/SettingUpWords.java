@@ -74,4 +74,25 @@ public class SettingUpWords extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_SET_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Обновите RecyclerView
+            arrayList.clear();
+            int id_set = getIntent().getIntExtra("id_set", 0);
+            Cursor cursor = databaseHelper.getAllWords();
+            while (cursor.moveToNext()) {
+                if (id_set == cursor.getInt(3)) {
+                    arrayList.add(new WordModel(
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(4),
+                            cursor.getInt(0),
+                            cursor.getInt(3)));
+                }
+            }
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
 }

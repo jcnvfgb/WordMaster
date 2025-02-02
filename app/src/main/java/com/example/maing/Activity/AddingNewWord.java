@@ -45,6 +45,7 @@ public class AddingNewWord extends AppCompatActivity {
         word = findViewById(R.id.editWord);
         wordTrans = findViewById(R.id.editTranslationWord);
         button = findViewById(R.id.addButtonWord);
+        databaseHelper = new DatabaseHelper(AddingNewWord.this);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
