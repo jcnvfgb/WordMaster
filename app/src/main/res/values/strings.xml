@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">mainG</string>
+
+    <string-array name="word_activity_array">
+        <item>bad</item>
+        <item>middle</item>
+        <item>good</item>
+        <item>great</item>
+    </string-array>
+    <string name="word_activity_prompt">Select word activity</string>
 </resources>

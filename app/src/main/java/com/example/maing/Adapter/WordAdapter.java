@@ -1,7 +1,6 @@
 package com.example.maing.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,33 +11,33 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.maing.Activity.SettingUpSets;
-import com.example.maing.Activity.SettingUpWords;
-import com.example.maing.Domain.LanguageModel;
 import com.example.maing.Domain.SetModel;
+import com.example.maing.Domain.WordModel;
 import com.example.maing.R;
 
 import java.util.ArrayList;
 
-public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
+public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     Context context;
-    ArrayList<SetModel> arrayList = new ArrayList<>();
+    ArrayList<WordModel> arrayList = new ArrayList<>();
 
-    public SetAdapter(Context context, ArrayList<SetModel> arrayList) {
+    public WordAdapter(Context context, ArrayList<WordModel> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
     }
 
     @NonNull
     @Override
-    public SetAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.language_item, parent, false);
-        return new SetAdapter.ViewHolder(view);
+    public WordAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.word_item, parent, false);
+        return new WordAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SetAdapter.ViewHolder holder, int position) {
-        holder.title.setText(arrayList.get(position).getSetName());
+    public void onBindViewHolder(@NonNull WordAdapter.ViewHolder holder, int position) {
+        holder.word.setText(arrayList.get(position).getWord());
+        holder.wortTrans.setText(arrayList.get(position).getTranslation());
+        holder.wordAct.setText(arrayList.get(position).getWordActivity());
 
         switch (position) {
             case 0:
@@ -54,16 +53,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.layout.setBackgroundResource(R.drawable.list_background_1);
                 break;
         }
-
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, SettingUpWords.class);
-                intent.putExtra("id_set", arrayList.get(position).getId_set());
-                intent.putExtra("id_lan", arrayList.get(position).getId_language());
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -72,16 +61,17 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title, quantityWord;
+        TextView word, wortTrans, wordAct;
         ImageView background_img;
         ConstraintLayout layout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            title = itemView.findViewById(R.id.titleTxt);
-            quantityWord = itemView.findViewById(R.id.quantityWord);
-            background_img = itemView.findViewById(R.id.background_img);
-            layout = itemView.findViewById(R.id.dictionary_layout);
+            word = itemView.findViewById(R.id.word_titleTxt);
+            wortTrans = itemView.findViewById(R.id.word_translation);
+            wordAct = itemView.findViewById(R.id.word_activity);
+            background_img = itemView.findViewById(R.id.word_background_img);
+            layout = itemView.findViewById(R.id.word_layout);
         }
     }
 }
