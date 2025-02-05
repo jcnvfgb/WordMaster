@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -35,6 +37,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        // Включаем поддержку внешних ключей для всех подключений
+        db.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override
@@ -171,21 +180,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Delete a language
     public void deleteLanguage(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_LANGUAGES, COLUMN_LANGUAGE_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_LANGUAGES, COLUMN_LANGUAGE_ID + " = ?", new String[]{String.valueOf(id)});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
     }
 
     // Delete a set
     public void deleteSet(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_SETS, COLUMN_SET_ID + " = ?", new String[]{String.valueOf(id)});
-        db.close();
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_SETS, COLUMN_SET_ID + " = ?", new String[]{String.valueOf(id)});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
     }
 
     // Delete a word
     public void deleteWord(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_WORDS, COLUMN_WORD_ID + " = ?", new String[]{String.valueOf(id)});
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_WORDS, COLUMN_WORD_ID + " = ?", new String[]{String.valueOf(id)});
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+
+    public void checkWordsAfterDeleteSet() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor wordsCursor = db.rawQuery("SELECT * FROM " + TABLE_WORDS, new String[]{});
+
+        while (wordsCursor.moveToNext()) {
+            Log.d("DatabaseHelper", "ID: " + wordsCursor.getInt(0));
+            Log.d("DatabaseHelper", "Word: " + wordsCursor.getString(1));
+        }
+
+        wordsCursor.close();
         db.close();
     }
+
 }

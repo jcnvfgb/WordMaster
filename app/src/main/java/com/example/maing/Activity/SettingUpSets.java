@@ -76,10 +76,23 @@ public class SettingUpSets extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_SET_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Обновите RecyclerView
-            arrayList.clear();
-            int id_len = getIntent().getIntExtra("id", 0);
-            Cursor cursor = databaseHelper.getAllSets();
+            updateDataSet();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        updateDataSet();
+    }
+
+    private void updateDataSet() {
+        arrayList.clear();
+        int id_len = getIntent().getIntExtra("id", 0);
+        Cursor cursor = null;
+        try {
+            cursor = databaseHelper.getAllSets();
             while (cursor.moveToNext()) {
                 if (id_len == cursor.getInt(2)) {
                     arrayList.add(new SetModel(cursor.getString(1),
@@ -87,7 +100,13 @@ public class SettingUpSets extends AppCompatActivity {
                             cursor.getInt(2)));
                 }
             }
-            recyclerView.getAdapter().notifyDataSetChanged();
+        } catch (Exception e) {
+            Log.e("SettingUpSets", "Error fetching data ", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 }

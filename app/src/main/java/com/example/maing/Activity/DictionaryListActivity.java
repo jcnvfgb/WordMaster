@@ -41,6 +41,7 @@ public class DictionaryListActivity extends AppCompatActivity {
         });*/
 
         noteHelper = new DatabaseHelper(this);
+        noteHelper.checkWordsAfterDeleteSet();
         initRecyclerView();
 
         ConstraintLayout btnBack = findViewById(R.id.btn_back);

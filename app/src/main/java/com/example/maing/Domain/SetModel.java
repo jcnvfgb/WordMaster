@@ -1,13 +1,25 @@
 package com.example.maing.Domain;
 
+import java.util.Random;
+
 public class SetModel {
     String setName;
-    int id_set, id_language;
+    int id_set, id_language, back_img;
 
     public SetModel(String setName, int id_set, int id_language) {
         this.setName = setName;
         this.id_set = id_set;
         this.id_language = id_language;
+        Random random = new Random();
+        back_img = random.nextInt(3) + 1;
+    }
+
+    public int getBack_img() {
+        return back_img;
+    }
+
+    public void setBack_img(int back_img) {
+        this.back_img = back_img;
     }
 
     public String getSetName() {

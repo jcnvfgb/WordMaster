@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.maing.Activity.SetManagement;
 import com.example.maing.Activity.SettingUpSets;
 import com.example.maing.Activity.SettingUpWords;
 import com.example.maing.Domain.LanguageModel;
@@ -40,7 +41,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull SetAdapter.ViewHolder holder, int position) {
         holder.title.setText(arrayList.get(position).getSetName());
 
-        switch (position) {
+        switch (arrayList.get(position).getBack_img()) {
             case 0:
                 holder.background_img.setImageResource(R.drawable.bg_1);
                 holder.layout.setBackgroundResource(R.drawable.list_background_1);
@@ -53,17 +54,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
                 holder.background_img.setImageResource(R.drawable.bg_3);
                 holder.layout.setBackgroundResource(R.drawable.list_background_1);
                 break;
+            default:
+                holder.background_img.setImageResource(R.drawable.bg_1);
+                holder.layout.setBackgroundResource(R.drawable.list_background_1);
         }
 
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, SettingUpWords.class);
-                intent.putExtra("id_set", arrayList.get(position).getId_set());
-                intent.putExtra("id_lan", arrayList.get(position).getId_language());
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -82,6 +77,33 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.ViewHolder> {
             quantityWord = itemView.findViewById(R.id.quantityWord);
             background_img = itemView.findViewById(R.id.background_img);
             layout = itemView.findViewById(R.id.dictionary_layout);
+
+            layout.setOnClickListener(v -> {
+                int currentPosition = getAdapterPosition();
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    SetModel item = arrayList.get(currentPosition);
+                    Intent intent = new Intent(context, SettingUpWords.class);
+                    intent.putExtra("id_set", item.getId_set());
+                    intent.putExtra("id_lan", item.getId_language());
+                    context.startActivity(intent);
+                }
+            });
+
+            layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int currentPosition = getAdapterPosition();
+                    if (currentPosition != RecyclerView.NO_POSITION) {
+                        SetModel item = arrayList.get(currentPosition);
+                        Intent intent = new Intent(context, SetManagement.class);
+                        intent.putExtra("id_set", item.getId_set());
+                        intent.putExtra("id_lan", item.getId_language());
+                        intent.putExtra("setName", item.getSetName());
+                        context.startActivity(intent);
+                    }
+                    return false;
+                }
+            });
         }
     }
 }
