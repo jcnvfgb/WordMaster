@@ -55,7 +55,7 @@ public class SetManagement extends AppCompatActivity {
                             id_len
                     );
                     Toast.makeText(SetManagement.this,
-                            "Tha data successfully changed",
+                            "The data successfully changed",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -67,7 +67,7 @@ public class SetManagement extends AppCompatActivity {
             public void onClick(View view) {
                 databaseHelper.deleteSet(id_set);
                 Toast.makeText(SetManagement.this,
-                        "Tha data successfully delete",
+                        "The data successfully delete",
                         Toast.LENGTH_SHORT).show();
                 finish();
             }

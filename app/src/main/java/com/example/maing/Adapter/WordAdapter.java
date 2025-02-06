@@ -1,6 +1,7 @@
 package com.example.maing.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.maing.Activity.SettingUpWords;
+import com.example.maing.Activity.WordManagement;
 import com.example.maing.Domain.SetModel;
 import com.example.maing.Domain.WordModel;
 import com.example.maing.R;
@@ -72,6 +75,23 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             wordAct = itemView.findViewById(R.id.word_activity);
             background_img = itemView.findViewById(R.id.word_background_img);
             layout = itemView.findViewById(R.id.word_layout);
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int currentPosition = getAdapterPosition();
+                    if (currentPosition != RecyclerView.NO_POSITION) {
+                        WordModel item = arrayList.get(currentPosition);
+                        Intent intent = new Intent(context, WordManagement.class);
+                        intent.putExtra("id_word", item.getId_word());
+                        intent.putExtra("id_set", item.getId_set());
+                        intent.putExtra("word", item.getWord());
+                        intent.putExtra("translation", item.getTranslation());
+                        intent.putExtra("wordActivity", item.getWordActivity());
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 }

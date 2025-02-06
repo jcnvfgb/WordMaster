@@ -74,14 +74,28 @@ public class SettingUpWords extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_SET_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Обновите RecyclerView
-            arrayList.clear();
             int id_set = getIntent().getIntExtra("id_set", 0);
-            Cursor cursor = databaseHelper.getAllWords();
+            updateDataSet(id_set);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int id_set = getIntent().getIntExtra("id_set", 0);
+        updateDataSet(id_set);
+    }
+
+    private void updateDataSet(int id_set) {
+        arrayList.clear();
+        Cursor cursor = null;
+        try {
+            cursor = databaseHelper.getAllWords();
             while (cursor.moveToNext()) {
                 if (id_set == cursor.getInt(3)) {
                     arrayList.add(new WordModel(
@@ -92,7 +106,13 @@ public class SettingUpWords extends AppCompatActivity {
                             cursor.getInt(3)));
                 }
             }
-            recyclerView.getAdapter().notifyDataSetChanged();
+        } catch (Exception e) {
+            Log.e("SettingUpWords", "Error fetching data", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 }

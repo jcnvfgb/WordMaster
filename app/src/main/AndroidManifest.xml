@@ -13,8 +13,13 @@
         android:theme="@style/Theme.MainG"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.WordManagement"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
             android:name=".Activity.SetManagement"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".Activity.SettingUpWords"
             android:exported="false"
