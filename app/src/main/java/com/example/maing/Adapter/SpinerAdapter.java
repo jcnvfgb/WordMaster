@@ -28,7 +28,7 @@ public class SpinerAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return i;
+        return arrayList.get(i);
     }
 
     @Override
@@ -42,10 +42,10 @@ public class SpinerAdapter extends BaseAdapter {
                 .inflate(R.layout.spinner_item, viewGroup, false);
 
         TextView txtName = rootView.findViewById(R.id.titleTxt);
-        TextView desc = rootView.findViewById(R.id.wordForTest);
+        TextView wordForTest = rootView.findViewById(R.id.wordForTest);
 
         txtName.setText(arrayList.get(i).getSetName());
-        desc.setText(arrayList.get(i).getId_set());
+        wordForTest.setText(String.valueOf(arrayList.get(i).getId_set()));
 
         return rootView;
     }

@@ -14,7 +14,8 @@
         tools:targetApi="31">
         <activity
             android:name=".Activity.FreeMode"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".Activity.BasicQuiz"
             android:exported="false"

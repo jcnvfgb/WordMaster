@@ -294,4 +294,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return translationsList;
     }
+
+    public ArrayList<WordModel> getWordsBySetId(int setId) {
+        ArrayList<WordModel> wordsList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_WORDS
+                + " WHERE " + COLUMN_WORD_SET_ID + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(setId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                WordModel word = new WordModel(
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(4),
+                        cursor.getInt(0),
+                        cursor.getInt(3)
+                );
+                wordsList.add(word);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return wordsList;
+    }
 }

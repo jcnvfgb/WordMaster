@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,7 +65,23 @@ public class BasicQuiz extends AppCompatActivity {
         btnGood.setOnClickListener(v -> handleActivitySelection("good"));
         btnGreat.setOnClickListener(v -> handleActivitySelection("great"));
 
-        questionItems = databaseHelper.getBadAndMiddleWords();
+        int freeMode = getIntent().getIntExtra("freeMode", 0);
+        int id_set = getIntent().getIntExtra("idSet", 0);
+        if (freeMode == 1) {
+            if (id_set == 0) {
+                finish();
+            } else {
+                questionItems = databaseHelper.getWordsBySetId(id_set);
+            }
+        } else {
+            questionItems = databaseHelper.getBadAndMiddleWords();
+        }
+
+        if (questionItems == null || questionItems.isEmpty()) {
+            Toast.makeText(this, "No questions available", Toast.LENGTH_SHORT).show();
+            finish();
+            return; // Прерываем выполнение
+        }
 
         Log.d("BasicQuiz", "Size of questionItems: " + questionItems.size());
 
