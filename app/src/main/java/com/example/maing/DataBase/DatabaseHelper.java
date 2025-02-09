@@ -9,6 +9,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.maing.Domain.WordModel;
+
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "my_database.db";
@@ -246,4 +250,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public ArrayList<WordModel> getBadAndMiddleWords() {
+        ArrayList<WordModel> wordsList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_WORDS
+                + " WHERE " + COLUMN_WORD_ACTIVITY + " IN ('bad', 'middle')";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                WordModel word = new WordModel(
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(4),
+                        cursor.getInt(0),
+                        cursor.getInt(3)
+                );
+                wordsList.add(word);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return wordsList;
+    }
+
+    public ArrayList<String> getAllTranslations() {
+        ArrayList<String> translationsList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + COLUMN_WORD_TRANSLATION + " FROM " + TABLE_WORDS;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                translationsList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return translationsList;
+    }
 }

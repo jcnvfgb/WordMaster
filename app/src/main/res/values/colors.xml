@@ -15,4 +15,8 @@
 
     <color name="orange">#ED8B00</color>
     <color name="backgroundForBtm">#302c34</color>
+
+    <color name="green">#196435</color>
+    <color name="red">#ca5758</color>
+    <color name="base_color_answer">#312935</color>
 </resources>

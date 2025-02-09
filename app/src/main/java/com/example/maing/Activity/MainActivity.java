@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int i = dbHelper.getBadAndMiddleWordsCount();
-                if (i >= 0) {
+                if (i > 0) {
                     Log.d("WordCount", "Bad and Middle words: " + i);
                     startActivity(new Intent(MainActivity.this, BasicQuiz.class));
+                } else {
+                    Toast.makeText(MainActivity.this, "There are no words to learn", Toast.LENGTH_SHORT).show();
                 }
             }
         });
