@@ -2,6 +2,7 @@ package com.example.maing.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -11,10 +12,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.maing.DataBase.DatabaseHelper;
 import com.example.maing.R;
 
 public class MainActivity extends AppCompatActivity {
-    ConstraintLayout btn1;
+    ConstraintLayout btn1, btn2, btn3, btn4;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +30,42 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        dbHelper = new DatabaseHelper(this);
+
         btn1 = findViewById(R.id.btn1);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,
                         DictionaryListActivity.class));
+            }
+        });
+
+        btn2 = findViewById(R.id.btn2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int i = dbHelper.getBadAndMiddleWordsCount();
+                if (i >= 0) {
+                    Log.d("WordCount", "Bad and Middle words: " + i);
+                    startActivity(new Intent(MainActivity.this, BasicQuiz.class));
+                }
+            }
+        });
+
+        btn3 = findViewById(R.id.btn3);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        btn4 = findViewById(R.id.btn4);
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

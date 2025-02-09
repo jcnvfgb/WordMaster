@@ -229,4 +229,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public int getBadAndMiddleWordsCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM " + TABLE_WORDS
+                + " WHERE " + COLUMN_WORD_ACTIVITY + " IN ('bad', 'middle')";
+
+        Cursor cursor = db.rawQuery(query, null);
+        int count = 0;
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+        return count;
+    }
+
 }
