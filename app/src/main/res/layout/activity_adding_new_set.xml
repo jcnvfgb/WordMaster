@@ -55,7 +55,7 @@
             android:clickable="true"
             android:elevation="2dp"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Add note"
+            android:text="Add set"
             android:textColor="@color/orange"
             android:textSize="18sp"
             android:textStyle="bold"
