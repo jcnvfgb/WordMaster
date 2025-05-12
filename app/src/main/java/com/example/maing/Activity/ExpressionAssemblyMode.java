@@ -54,6 +54,21 @@ public class ExpressionAssemblyMode extends AppCompatActivity implements Express
     @Override
     public void onAnswerChecked(boolean isCorrect) {
         String message = isCorrect ? "Правильно! Молодец!" : "Попробуй еще раз!";
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        if (isCorrect) {
+            List<String> correctAnswer = Arrays.asList("I", "dont't", "love", "learning", "languages");
+
+            gameController = new ExpressionAssembly(
+                    this,
+                    findViewById(R.id.word_bank),
+                    findViewById(R.id.answer_area),
+                    correctAnswer,
+                    this
+            );
+
+            setupCheckButton();
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
 }

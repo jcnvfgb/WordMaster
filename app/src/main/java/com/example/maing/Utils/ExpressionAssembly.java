@@ -1,10 +1,13 @@
 package com.example.maing.Utils;
 
+import static com.example.maing.R.*;
+
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.example.maing.R;
 import com.google.android.flexbox.FlexboxLayout;
@@ -58,6 +61,8 @@ public class ExpressionAssembly {
         textView.setBackgroundResource(isInAnswerArea ?
                 R.drawable.answer_word_bg :
                 R.drawable.word_bank_bg);
+
+        textView.setTextColor(ContextCompat.getColor(context, color.orange));
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

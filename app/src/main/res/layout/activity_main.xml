@@ -274,6 +274,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn5"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_margin="24dp"
@@ -295,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Random event"
+                    android:text="Kana from Japanese"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"

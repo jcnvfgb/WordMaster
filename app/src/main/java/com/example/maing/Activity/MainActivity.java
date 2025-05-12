@@ -17,7 +17,7 @@ import com.example.maing.DataBase.DatabaseHelper;
 import com.example.maing.R;
 
 public class MainActivity extends AppCompatActivity {
-    ConstraintLayout btn1, btn2, btn3, btn4;
+    ConstraintLayout btn1, btn2, btn3, btn4, btn5;
     DatabaseHelper dbHelper;
 
     @Override
@@ -71,5 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, DebugAct.class));
             }
         });
+
+        btn5 = findViewById(R.id.btn5);
+
     }
 }

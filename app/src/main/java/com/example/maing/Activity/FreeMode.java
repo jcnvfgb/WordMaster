@@ -173,6 +173,13 @@ public class FreeMode extends AppCompatActivity {
                     Log.d("FreeMode", "Set id: " + selectedSet.getId_set());
                     Log.d("FreeMode", "Xto take in selected rofl: " + selectMode.getText());
                     finish();
+                } else if(selectedModeS.equals(modeArray[3])) {
+                    Intent intent = new Intent(FreeMode.this, ExpressionAssemblyMode.class);
+                    intent.putExtra("idSet", selectedSet.getId_set());
+                    startActivity(intent);
+                    Log.d("FreeMode", "Set id: " + selectedSet.getId_set());
+                    Log.d("FreeMode", "Xto take in selected rofl: " + selectMode.getText());
+                    finish();
                 } else {
                     Toast.makeText(FreeMode.this, "In development!", Toast.LENGTH_SHORT).show();
                 }
