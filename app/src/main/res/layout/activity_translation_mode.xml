@@ -87,4 +87,65 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/activity_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_margin="8dp" >
+
+        <TextView
+            android:id="@+id/btn_bad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="bad"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/card_background"
+            android:layout_margin="1dp"/>
+
+        <TextView
+            android:id="@+id/btn_middle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="middle"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/card_background"
+            android:layout_margin="1dp"/>
+
+        <TextView
+            android:id="@+id/btn_good"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="good"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/card_background"
+            android:layout_margin="1dp"/>
+
+        <TextView
+            android:id="@+id/btn_great"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="great"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/card_background"
+            android:layout_margin="1dp"/>
+    </LinearLayout>
+
 </LinearLayout>
