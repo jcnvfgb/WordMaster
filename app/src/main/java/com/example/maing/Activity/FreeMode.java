@@ -150,10 +150,17 @@ public class FreeMode extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String selectedModeS = selectMode.getText().toString();
+                SetModel selectedSet = (SetModel) spinner.getSelectedItem();
                 if (selectedModeS.equals(modeArray[0])) {
-                    SetModel selectedSet = (SetModel) spinner.getSelectedItem();
                     Intent intent = new Intent(FreeMode.this, BasicQuiz.class);
                     intent.putExtra("freeMode", 1);
+                    intent.putExtra("idSet", selectedSet.getId_set());
+                    startActivity(intent);
+                    Log.d("FreeMode", "Set id: " + selectedSet.getId_set());
+                    Log.d("FreeMode", "Xto take in selected rofl: " + selectMode.getText());
+                    finish();
+                } else if(selectedModeS.equals(modeArray[1])) {
+                    Intent intent = new Intent(FreeMode.this, TranslationMode.class);
                     intent.putExtra("idSet", selectedSet.getId_set());
                     startActivity(intent);
                     Log.d("FreeMode", "Set id: " + selectedSet.getId_set());
