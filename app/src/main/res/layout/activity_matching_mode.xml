@@ -72,7 +72,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:onClick="onNextLevelButtonClick"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

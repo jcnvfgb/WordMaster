@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MatchingMode {
+public class MatchingModeController {
     private List<WordPair> generalPairs;
     private List<WordPair> originalPairs;
     private List<WordPair> leftWords;
@@ -25,7 +25,7 @@ public class MatchingMode {
         void onNextLevel();
     }
 
-    public MatchingMode(GameStateListener listener) {
+    public MatchingModeController(GameStateListener listener) {
         this.listener = listener;
         generalPairs = Arrays.asList(
                 new WordPair("Hello", "Привет"),
@@ -39,7 +39,7 @@ public class MatchingMode {
                 new WordPair("Failure", "Отказ"),
                 new WordPair("Bag", "Баг"),
                 new WordPair("Damn", "Черт"),
-                new WordPair("Fuck", "Блять"),
+                new WordPair("Love", "Любить"),
                 new WordPair("Hate", "Ненавидеть"),
                 new WordPair("Android", "Андройд")
         );
