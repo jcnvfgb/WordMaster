@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/edit_shape"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="32dp">
 
         <TextView
             android:layout_width="wrap_content"

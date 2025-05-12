@@ -1,0 +1,234 @@
+@startuml
+class DebugAct {
+~ EditText command
+~ AppCompatButton execute
+~ DatabaseHelper databaseHelper
+# void onCreate(Bundle)
+}
+
+class WordAdapter {
+~ Context context
+~ ArrayList<WordModel> arrayList
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
+}
+
+class WordAdapter$ViewHolder {
+~ TextView word
+~ ImageView background_img
+~ ConstraintLayout layout
+}
+
+class BasicQuiz {
+~ TextView quizText
+~ ArrayList<WordModel> questionItems
+~ LinearLayout activityButtons
+~ TextView btnBad
+~ int currentQuestion
+~ int correct
+~ DatabaseHelper databaseHelper
+# void onCreate(Bundle)
+- void handleActivitySelection(String)
+- void setQuestionScreen(int)
+}
+
+class SetAdapter {
+~ Context context
+~ ArrayList<SetModel> arrayList
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
+}
+
+class SetAdapter$ViewHolder {
+~ TextView title
+~ ImageView background_img
+~ ConstraintLayout layout
+}
+
+class SetModel {
+~ String setName
+~ int id_set
++ int getBack_img()
++ void setBack_img(int)
++ String getSetName()
++ void setSetName(String)
++ int getId_set()
++ void setId_set(int)
++ int getId_language()
++ void setId_language(int)
+}
+
+class FreeMode {
+~ DatabaseHelper databaseHelper
+~ ArrayList<SetModel> arrayList
+~ Spinner spinner
+~ SpinerAdapter spinerAdapter
+~ TextView startFreeMode
+# void onCreate(Bundle)
+}
+
+class WordManagement {
+~ EditText editWordUpdate
+~ Spinner spinnerWordActivityUpdate
+~ TextView updateButtonWord
+~ DatabaseHelper databaseHelper
+# void onCreate(Bundle)
+}
+
+class MainActivity {
+~ ConstraintLayout btn1
+~ DatabaseHelper dbHelper
+# void onCreate(Bundle)
+}
+
+class WordModel {
+~ String word
+~ int id_word
++ String getWord()
++ void setWord(String)
++ String getTranslation()
++ void setTranslation(String)
++ String getWordActivity()
++ void setWordActivity(String)
++ int getId_word()
++ void setId_word(int)
++ int getId_set()
++ void setId_set(int)
+}
+
+class SettingUpWords {
+~ FloatingActionButton floatingId
+~ RecyclerView recyclerView
+~ ArrayList<WordModel> arrayList
+~ DatabaseHelper databaseHelper
+- {static} int ADD_SET_REQUEST_CODE
+# void onCreate(Bundle)
+# void onActivityResult(int,int,Intent)
+# void onResume()
+- void updateDataSet(int)
+}
+
+class AddingNewSet {
+~ EditText edTitle
+~ TextView button
+~ DatabaseHelper databaseHelper
+# void onCreate(Bundle)
+}
+
+class SetManagement {
+~ EditText updateSetTitle
+~ TextView updateSetBtn
+~ DatabaseHelper databaseHelper
+# void onCreate(Bundle)
+}
+
+class LanguageAdapter {
+~ Context context
+~ ArrayList<LanguageModel> arrayList
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
+}
+
+class LanguageAdapter$ViewHolder {
+~ TextView title
+~ ImageView background_img
+~ ConstraintLayout layout
+}
+
+class DatabaseHelper {
+- {static} String DATABASE_NAME
+- {static} int DATABASE_VERSION
++ void insertLanguage(String)
++ void insertSet(String,int)
++ void insertWord(String,String,int,String)
++ Cursor getAllLanguages()
++ Cursor getAllSets()
++ Cursor getAllWords()
++ void updateLanguage(int,String)
++ void updateSet(int,String,int)
++ void updateWord(int,String,String,int,String)
++ void deleteLanguage(int)
++ void deleteSet(int)
++ void deleteWord(int)
++ void checkWordsAfterDeleteSet()
++ int getBadAndMiddleWordsCount()
++ ArrayList<WordModel> getBadAndMiddleWords()
++ ArrayList<String> getAllTranslations()
++ ArrayList<WordModel> getWordsBySetId(int)
+}
+
+class LanguageModel {
+~ String language
+~ int id_language
++ String getLanguage()
++ void setLanguage(String)
++ int getId_language()
++ void setId_language(int)
+}
+
+class SettingUpSets {
+~ FloatingActionButton floatingId
+~ RecyclerView recyclerView
+~ ArrayList<SetModel> arrayList
+~ DatabaseHelper databaseHelper
+- {static} int ADD_SET_REQUEST_CODE
+# void onCreate(Bundle)
+# void onActivityResult(int,int,Intent)
+# void onResume()
+- void updateDataSet()
+}
+
+class SpinerAdapter {
+- Context context
+- ArrayList<SetModel> arrayList
++ int getCount()
++ Object getItem(int)
++ long getItemId(int)
++ View getView(int,View,ViewGroup)
+}
+
+class DictionaryListActivity {
+- RecyclerView.Adapter adapterLanguageList
+- RecyclerView recyclerViewDictionary
+~ DatabaseHelper noteHelper
+# void onCreate(Bundle)
+- void initRecyclerView()
+}
+
+class AddingNewWord {
+~ EditText word
+~ Spinner spinnerWordActivity
+~ TextView button
+~ DatabaseHelper databaseHelper
+# void onCreate(Bundle)
+}
+
+DebugAct --> DatabaseHelper
+BasicQuiz --> DatabaseHelper
+BasicQuiz --> WordModel
+FreeMode --> DatabaseHelper
+FreeMode --> SpinerAdapter
+WordManagement --> DatabaseHelper
+MainActivity --> DatabaseHelper
+SettingUpWords --> DatabaseHelper
+SettingUpWords --> WordAdapter
+AddingNewSet --> DatabaseHelper
+SetManagement --> DatabaseHelper
+SettingUpSets --> DatabaseHelper
+SettingUpSets --> SetAdapter
+DictionaryListActivity --> DatabaseHelper
+DictionaryListActivity --> LanguageAdapter
+AddingNewWord --> DatabaseHelper
+
+WordAdapter --> WordAdapter$ViewHolder : composition
+SetAdapter --> SetAdapter$ViewHolder : composition
+LanguageAdapter --> LanguageAdapter$ViewHolder : composition
+
+WordAdapter --> WordModel
+SetAdapter --> SetModel
+LanguageAdapter --> LanguageModel
+SpinerAdapter --> SetModel
+@enduml

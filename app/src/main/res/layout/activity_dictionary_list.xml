@@ -10,7 +10,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#302c34">
+        android:background="#302c34"
+        android:paddingTop="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
