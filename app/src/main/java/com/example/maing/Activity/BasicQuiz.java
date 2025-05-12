@@ -1,5 +1,7 @@
 package com.example.maing.Activity;
 
+import static android.content.Intent.getIntent;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;

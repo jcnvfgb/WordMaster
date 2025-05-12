@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ExpressionAssemblyMode"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#302c34"
+    tools:context=".Activity.ExpressionAssemblyMode">
+
+    <!-- App Bar -->
+    <LinearLayout
+        android:id="@+id/appbarForExpressionAssemblyMode"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/edit_shape"
+        android:gravity="center"
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expression Assembly Mode"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_shape"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:layout_marginTop="32dp">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/answer_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_shape"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="flex_start"
+        android:padding="8dp"/>
+
+    <!-- Разделитель -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginVertical="8dp"/>
+
+    <!-- Область доступных слов -->
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/word_bank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        android:background="@drawable/edit_shape"
+        android:layout_margin="8dp"
+        app:alignItems="stretch"
+        app:alignContent="stretch"
+        app:justifyContent="flex_start"
+        app:flexDirection="row"
+        android:padding="8dp"/>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/checkExpression"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/edit_shape"
+            android:clickable="true"
+            android:elevation="2dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Check expression"
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
