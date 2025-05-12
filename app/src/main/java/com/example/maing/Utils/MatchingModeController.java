@@ -23,6 +23,7 @@ public class MatchingModeController {
         void onGameCompleted();
         void onGameReset();
         void onNextLevel();
+        void onOverGame();
     }
 
     public MatchingModeController(GameStateListener listener) {
@@ -99,10 +100,19 @@ public class MatchingModeController {
     }
 
     private void checkGameCompletion() {
+        boolean isOver = false;
         for (WordPair pair : originalPairs) {
             if (!pair.isMatched()) return;
         }
-        listener.onGameCompleted();
+        for (WordPair pair : generalPairs) {
+            if (!pair.isMatched()) return;
+            isOver = true;
+        }
+        if (isOver == true) {
+            listener.onOverGame();
+        } else {
+            listener.onGameCompleted();
+        }
     }
 
     public void resetGame() {

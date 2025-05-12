@@ -107,6 +107,17 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
         Toast.makeText(this, "Следующий уровень!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onOverGame() {
+        // Обновляем оба адаптера
+        leftAdapter.notifyDataSetChanged();
+        rightAdapter.notifyDataSetChanged();
+
+        // Можно добавить анимацию или другие эффекты
+        Toast.makeText(this, "It's over! No questions available!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
     // Добавляем кнопку сброса в меню или layout
     public void onResetButtonClick(View view) {
         matchingModeController.resetGame();
