@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btn5 = findViewById(R.id.btn5);
-
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, WikiPage.class));
+            }
+        });
     }
 }
