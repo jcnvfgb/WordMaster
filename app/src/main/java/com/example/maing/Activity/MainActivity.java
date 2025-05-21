@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 List<DataSetPacket> parsedData = parseFile(inputStream);
-                // Далее работайте с parsedData
+                dbHelper.importData(parsedData);
             } catch (IOException e) {
                 e.printStackTrace();
             }

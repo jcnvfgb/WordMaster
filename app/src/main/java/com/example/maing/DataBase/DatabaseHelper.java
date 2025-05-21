@@ -9,9 +9,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.maing.Domain.DataSetPacket;
 import com.example.maing.Domain.WordModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -320,5 +322,86 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return wordsList;
+    }
+
+    public int getLanguageId(String languageName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int languageId = -1;
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(
+                    TABLE_LANGUAGES,
+                    new String[]{COLUMN_LANGUAGE_ID},
+                    COLUMN_LANGUAGE_NAME + " = ?",
+                    new String[]{languageName},
+                    null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                languageId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LANGUAGE_ID));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return languageId;
+    }
+
+    public long getOrCreateSetId(String setName, long languageId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long setId = -1;
+        Cursor cursor = null;
+
+        try {
+            // Проверяем существование набора
+            cursor = db.query(
+                    TABLE_SETS,
+                    new String[]{COLUMN_SET_ID},
+                    COLUMN_SET_NAME + " = ? AND " + COLUMN_SET_LANGUAGE_ID + " = ?",
+                    new String[]{setName, String.valueOf(languageId)},
+                    null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                setId = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_SET_ID));
+            } else {
+                // Создаем новый набор
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_SET_NAME, setName);
+                values.put(COLUMN_SET_LANGUAGE_ID, languageId);
+                setId = db.insert(TABLE_SETS, null, values);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return setId;
+    }
+
+    public boolean importData(List<DataSetPacket> parsedData) {
+        int idLenguage = -1;
+        int idSet = -1;
+        for (DataSetPacket item : parsedData) {
+            idLenguage = getLanguageId(item.getLanguageName());
+            if (idLenguage == -1)
+                return false;
+            idSet = (int)getOrCreateSetId(item.getSetName(), idLenguage);
+
+            //Log.d("DatabaseHelper", "idLenguage: " + idLenguage);
+            //Log.d("DatabaseHelper", "idSet: " + idSet);
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_WORD_NAME, item.getWord());
+            values.put(COLUMN_WORD_TRANSLATION, item.getTranslation());
+            values.put(COLUMN_WORD_SET_ID, idSet);
+            values.put(COLUMN_WORD_ACTIVITY, "bad");
+            db.insert(TABLE_WORDS, null, values);
+            db.close();
+        }
+        return true;
     }
 }
