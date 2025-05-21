@@ -199,10 +199,12 @@ public class BasicQuiz extends AppCompatActivity {
             currentQuestion++;
             setQuestionScreen(currentQuestion);
         } else {
+            int id_set = getIntent().getIntExtra("idSet", 0);
             Intent intent = new Intent(BasicQuiz.this, Score.class);
             intent.putExtra("correct", correct);
             intent.putExtra("wrong", wrong);
             intent.putExtra("skipQ", skipQ);
+            intent.putExtra("idSet", id_set);
             startActivity(intent);
             finish();
         }

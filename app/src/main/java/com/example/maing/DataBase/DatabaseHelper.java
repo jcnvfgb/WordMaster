@@ -18,7 +18,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "my_database.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Table Names
     private static final String TABLE_LANGUAGES = "languages";
@@ -40,6 +40,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_WORD_TRANSLATION = "translation";
     private static final String COLUMN_WORD_SET_ID = "id_set";
     private static final String COLUMN_WORD_ACTIVITY = "wordActivity";
+
+    // Statistics Table Columns
+    private static final String TABLE_STATS = "statistics";
+    private static final String COLUMN_SESSION_ID = "id_session";
+    private static final String COLUMN_CORRECT = "correct";
+    private static final String COLUMN_INCORRECT = "incorrect";
+    private static final String COLUMN_SKIPPED = "skipped";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -93,6 +100,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         + ");";
 
         db.execSQL(CREATE_WORDS_TABLE);
+
+        // Создание таблицы статистики
+        String CREATE_STATS_TABLE =
+                "CREATE TABLE " + TABLE_STATS + "("
+                        + COLUMN_SESSION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + COLUMN_SET_NAME + " TEXT NOT NULL, "
+                        + COLUMN_CORRECT + " INTEGER DEFAULT 0, "
+                        + COLUMN_INCORRECT + " INTEGER DEFAULT 0, "
+                        + COLUMN_SKIPPED + " INTEGER DEFAULT 0, "
+                        + "FOREIGN KEY (" + COLUMN_SET_NAME + ") "
+                        + "REFERENCES " + TABLE_SETS + "(" + COLUMN_SET_NAME + ")"
+                        + ");";
+
+        db.execSQL(CREATE_STATS_TABLE);
     }
 
     @Override
@@ -100,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LANGUAGES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATS);
         onCreate(db);
     }
 
@@ -403,5 +425,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.close();
         }
         return true;
+    }
+
+    public long addStatsEntry(String setName, int correct, int incorrect, int skipped) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_SET_NAME, setName);
+        values.put(COLUMN_CORRECT, correct);
+        values.put(COLUMN_INCORRECT, incorrect);
+        values.put(COLUMN_SKIPPED, skipped);
+
+        long newRowId = db.insert(TABLE_STATS, null, values);
+        db.close();
+        return newRowId; // Возвращает ID новой записи или -1 при ошибке
+    }
+
+    public Cursor getAllStats() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_STATS + " ORDER BY "
+                + COLUMN_SESSION_ID + " DESC", null);
+    }
+
+    public int deleteStatsEntryStat(long sessionId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int deletedRows = db.delete(
+                TABLE_STATS,
+                COLUMN_SESSION_ID + " = ?",
+                new String[]{String.valueOf(sessionId)}
+        );
+        db.close();
+        return deletedRows;
+    }
+
+    public String getSetNameById(int setId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String setName = null;
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(
+                    TABLE_SETS,
+                    new String[]{COLUMN_SET_NAME},
+                    COLUMN_SET_ID + " = ?",
+                    new String[]{String.valueOf(setId)},
+                    null, null, null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                setName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SET_NAME));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return setName;
     }
 }

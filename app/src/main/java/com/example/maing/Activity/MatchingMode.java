@@ -141,10 +141,12 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
         // Можно добавить анимацию или другие эффекты
         Toast.makeText(this, "It's over! No questions available!", Toast.LENGTH_SHORT).show();
 
+        int id_set = getIntent().getIntExtra("idSet", 0);
         Intent intent = new Intent(MatchingMode.this, Score.class);
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
         intent.putExtra("skipQ", skipQ);
+        intent.putExtra("idSet", id_set);
         startActivity(intent);
         finish();
     }
