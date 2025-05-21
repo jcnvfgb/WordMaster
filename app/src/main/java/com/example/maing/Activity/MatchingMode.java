@@ -17,8 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.maing.Adapter.LeftWordAdapter;
 import com.example.maing.Adapter.RightTranslationAdapter;
+import com.example.maing.DataBase.DatabaseHelper;
+import com.example.maing.Domain.WordModel;
 import com.example.maing.R;
 import com.example.maing.Utils.MatchingModeController;
+
+import java.util.ArrayList;
 
 public class MatchingMode extends AppCompatActivity implements MatchingModeController.GameStateListener {
     TextView nextQuestion;
@@ -26,6 +30,8 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
     private LeftWordAdapter leftAdapter;
     private RightTranslationAdapter rightAdapter;
     private MatchingModeController matchingModeController;
+    DatabaseHelper databaseHelper;
+    ArrayList<WordModel> questionItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,13 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
             return insets;
         });
 
-        matchingModeController = new MatchingModeController(this);
+        databaseHelper = new DatabaseHelper(this);
+
+        int id_set = getIntent().getIntExtra("idSet", 0);
+
+        questionItems = databaseHelper.getWordsBySetId(id_set);
+
+        matchingModeController = new MatchingModeController(this, questionItems);
         setupRecyclerViews();
     }
 

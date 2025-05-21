@@ -1,5 +1,7 @@
 package com.example.maing.Utils;
 
+import com.example.maing.DataBase.DatabaseHelper;
+import com.example.maing.Domain.WordModel;
 import com.example.maing.Domain.WordPair;
 
 import java.util.ArrayList;
@@ -26,9 +28,10 @@ public class MatchingModeController {
         void onOverGame();
     }
 
-    public MatchingModeController(GameStateListener listener) {
+    public MatchingModeController(GameStateListener listener, ArrayList<WordModel> questionItems) {
         this.listener = listener;
-        generalPairs = Arrays.asList(
+        generalPairs = new ArrayList<>();
+        /*generalPairs = Arrays.asList(
                 new WordPair("Hello", "Привет"),
                 new WordPair("Goodbye", "Пока"),
                 new WordPair("Cat", "Кошка"),
@@ -43,7 +46,10 @@ public class MatchingModeController {
                 new WordPair("Love", "Любить"),
                 new WordPair("Hate", "Ненавидеть"),
                 new WordPair("Android", "Андройд")
-        );
+        );*/
+        for(WordModel item : questionItems) {
+            generalPairs.add(new WordPair(item.getWord(), item.getTranslation()));
+        }
         initializeData();
     }
 
