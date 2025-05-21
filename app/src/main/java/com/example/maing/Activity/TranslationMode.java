@@ -1,5 +1,6 @@
 package com.example.maing.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,13 +22,13 @@ import com.example.maing.R;
 import java.util.ArrayList;
 
 public class TranslationMode extends AppCompatActivity {
-    TextView quizText, checkAnswer;
+    TextView quizText, checkAnswer, skipQuestion;
     EditText answerField;
     ArrayList<WordModel> questionItems;
     LinearLayout activityButtons;
     TextView btnBad, btnMiddle, btnGood, btnGreat;
     int currentQuestion = 0;
-    int correct = 0, wrong = 0;
+    int correct = 0, wrong = 0, skipQ;
     DatabaseHelper databaseHelper;
 
     @Override
@@ -55,6 +56,7 @@ public class TranslationMode extends AppCompatActivity {
         btnMiddle = findViewById(R.id.btn_middle);
         btnGood = findViewById(R.id.btn_good);
         btnGreat = findViewById(R.id.btn_great);
+        skipQuestion = findViewById(R.id.skipQuestion);
 
         // Обработчики для кнопок активности
         btnBad.setOnClickListener(v -> handleActivitySelection("bad"));
@@ -76,15 +78,24 @@ public class TranslationMode extends AppCompatActivity {
                 if (questionItems.get(currentQuestion).getTranslation().equals(
                         answerField.getText().toString().trim()
                 )) {
-                    Log.d("BasicQuiz", "The answer: cockerect");
+                    Log.d("TranslationMode", "The answer: cockerect");
                     correct++;
                     answerField.setBackgroundResource(R.color.green);
                 } else {
-                    Log.d("BasicQuiz", "The answer: not cockerect");
+                    Log.d("TranslationMode", "The answer: not cockerect");
                     wrong++;
                     answerField.setBackgroundResource(R.color.red);
                 }
 
+                skipQuestion.setVisibility(View.GONE);
+                activityButtons.setVisibility(View.VISIBLE);
+            }
+        });
+        skipQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipQ++;
+                skipQuestion.setVisibility(View.GONE);
                 activityButtons.setVisibility(View.VISIBLE);
             }
         });
@@ -103,11 +114,17 @@ public class TranslationMode extends AppCompatActivity {
 
         // Переход к следующему вопросу
         activityButtons.setVisibility(View.GONE);
+        skipQuestion.setVisibility(View.VISIBLE);
 
         if(currentQuestion < questionItems.size() - 1) {
             currentQuestion++;
             setQuestionScreen(currentQuestion);
         } else {
+            Intent intent = new Intent(TranslationMode.this, Score.class);
+            intent.putExtra("correct", correct);
+            intent.putExtra("wrong", wrong);
+            intent.putExtra("skipQ", skipQ);
+            startActivity(intent);
             finish();
         }
     }
