@@ -11,9 +11,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.maing.DataBase.DatabaseHelper;
+import com.example.maing.Domain.WordModel;
 import com.example.maing.R;
 import com.example.maing.Utils.ExpressionAssembly;
+import com.example.maing.Utils.PhraseSplitter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +25,9 @@ public class ExpressionAssemblyMode extends AppCompatActivity implements Express
 
     //Сборка выражения
     private ExpressionAssembly gameController;
+    DatabaseHelper databaseHelper;
+    ArrayList<WordModel> questionItems;
+    int currentQuestion = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +40,15 @@ public class ExpressionAssemblyMode extends AppCompatActivity implements Express
             return insets;
         });
 
-        List<String> correctAnswer = Arrays.asList("I", "love", "learning", "languages");
+        PhraseSplitter phraseSplitter = new PhraseSplitter();
+
+        databaseHelper = new DatabaseHelper(this);
+
+        int id_set = getIntent().getIntExtra("idSet", 0);
+
+        questionItems = databaseHelper.getWordsBySetId(id_set);
+
+        List<String> correctAnswer = phraseSplitter.splitPhrase(questionItems.get(currentQuestion).getWord());
 
         gameController = new ExpressionAssembly(
                 this,
@@ -55,7 +70,14 @@ public class ExpressionAssemblyMode extends AppCompatActivity implements Express
     public void onAnswerChecked(boolean isCorrect) {
         String message = isCorrect ? "Правильно! Молодец!" : "Попробуй еще раз!";
         if (isCorrect) {
-            List<String> correctAnswer = Arrays.asList("I", "dont't", "love", "learning", "languages");
+            PhraseSplitter phraseSplitter = new PhraseSplitter();
+            List<String> correctAnswer = phraseSplitter.splitPhrase("I don't love learning languages");;
+            if(currentQuestion < questionItems.size() - 1) {
+                currentQuestion++;
+                correctAnswer = phraseSplitter.splitPhrase(questionItems.get(currentQuestion).getWord());
+            } else {
+                finish();
+            }
 
             gameController = new ExpressionAssembly(
                     this,
