@@ -2,6 +2,7 @@ package com.example.maing.Activity;
 
 import static android.content.Intent.getIntent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -28,12 +29,12 @@ import java.util.stream.Collectors;
 
 public class BasicQuiz extends AppCompatActivity {
 
-    TextView quizText, answer1, answer2, answer3, answer4;
+    TextView quizText, answer1, answer2, answer3, answer4, skip;
     ArrayList<WordModel> questionItems;
     LinearLayout activityButtons;
     TextView btnBad, btnMiddle, btnGood, btnGreat;
     int currentQuestion = 0;
-    int correct = 0, wrong = 0;
+    int correct = 0, wrong = 0, skipQ = 0;
     DatabaseHelper databaseHelper;
 
     @Override
@@ -54,6 +55,7 @@ public class BasicQuiz extends AppCompatActivity {
         answer2 = findViewById(R.id.answer2);
         answer3 = findViewById(R.id.answer3);
         answer4 = findViewById(R.id.answer4);
+        skip = findViewById(R.id.skipQuestionBQ);
 
         activityButtons = findViewById(R.id.activity_buttons);
         btnBad = findViewById(R.id.btn_bad);
@@ -104,6 +106,7 @@ public class BasicQuiz extends AppCompatActivity {
                     answer1.setBackgroundResource(R.color.red);
                 }
 
+                skip.setVisibility(View.GONE);
                 activityButtons.setVisibility(View.VISIBLE);
             }
         });
@@ -123,6 +126,7 @@ public class BasicQuiz extends AppCompatActivity {
                     answer2.setBackgroundResource(R.color.red);
                 }
 
+                skip.setVisibility(View.GONE);
                 activityButtons.setVisibility(View.VISIBLE);
             }
         });
@@ -142,6 +146,7 @@ public class BasicQuiz extends AppCompatActivity {
                     answer3.setBackgroundResource(R.color.red);
                 }
 
+                skip.setVisibility(View.GONE);
                 activityButtons.setVisibility(View.VISIBLE);
             }
         });
@@ -161,7 +166,16 @@ public class BasicQuiz extends AppCompatActivity {
                     answer4.setBackgroundResource(R.color.red);
                 }
 
+                skip.setVisibility(View.GONE);
                 activityButtons.setVisibility(View.VISIBLE);
+            }
+        });
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipQ++;
+                handleActivitySelection("bad");
             }
         });
     }
@@ -179,11 +193,17 @@ public class BasicQuiz extends AppCompatActivity {
 
         // Переход к следующему вопросу
         activityButtons.setVisibility(View.GONE);
+        skip.setVisibility(View.VISIBLE);
 
         if(currentQuestion < questionItems.size() - 1) {
             currentQuestion++;
             setQuestionScreen(currentQuestion);
         } else {
+            Intent intent = new Intent(BasicQuiz.this, Score.class);
+            intent.putExtra("correct", correct);
+            intent.putExtra("wrong", wrong);
+            intent.putExtra("skipQ", skipQ);
+            startActivity(intent);
             finish();
         }
     }

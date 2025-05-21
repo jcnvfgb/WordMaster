@@ -2,6 +2,7 @@ package com.example.maing.Activity;
 
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -25,13 +26,14 @@ import com.example.maing.Utils.MatchingModeController;
 import java.util.ArrayList;
 
 public class MatchingMode extends AppCompatActivity implements MatchingModeController.GameStateListener {
-    TextView nextQuestion;
+    TextView skipQuestion;
     private RecyclerView rvLeft, rvRight;
     private LeftWordAdapter leftAdapter;
     private RightTranslationAdapter rightAdapter;
     private MatchingModeController matchingModeController;
     DatabaseHelper databaseHelper;
     ArrayList<WordModel> questionItems;
+    int correct = 0, wrong = 0, skipQ = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,15 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
 
         matchingModeController = new MatchingModeController(this, questionItems);
         setupRecyclerViews();
+
+        skipQuestion = findViewById(R.id.skipQuestion);
+        skipQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipQ++;
+                matchingModeController.nextLoop();
+            }
+        });
     }
 
     private void setupRecyclerViews() {
@@ -83,11 +94,13 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
     public void onMatchSuccess(int leftPosition, int rightPosition) {
         leftAdapter.notifyItemChanged(leftPosition);
         rightAdapter.notifyItemChanged(rightPosition);
+        correct++;
     }
 
     @Override
     public void onMatchError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        wrong++;
     }
 
     @Override
@@ -127,6 +140,12 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
 
         // Можно добавить анимацию или другие эффекты
         Toast.makeText(this, "It's over! No questions available!", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(MatchingMode.this, Score.class);
+        intent.putExtra("correct", correct);
+        intent.putExtra("wrong", wrong);
+        intent.putExtra("skipQ", skipQ);
+        startActivity(intent);
         finish();
     }
 
