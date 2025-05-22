@@ -60,7 +60,7 @@ public class MatchingMode extends AppCompatActivity implements MatchingModeContr
             @Override
             public void onClick(View view) {
                 skipQ++;
-                matchingModeController.nextLoop();
+                matchingModeController.skipLoop();
             }
         });
     }

@@ -185,6 +185,37 @@ public class MatchingModeController {
         listener.onNextLevel();
     }
 
+    public void skipLoop() {
+        for (WordPair pair : originalPairs) {
+            pair.setMatched(true);
+        }
+        loopGame++;
+        int fromIndex = loopGame * 5;
+        int toIndex = Math.min(fromIndex + 5, generalPairs.size());
+
+        if(fromIndex >= generalPairs.size()) {
+            return;
+        }
+
+        originalPairs = new ArrayList<>(generalPairs.subList(fromIndex, toIndex));
+
+        // Восстанавливаем исходный порядок слева
+        leftWords.clear();
+        leftWords.addAll(originalPairs);
+
+        // Перемешиваем правый список
+        List<WordPair> shuffled = new ArrayList<>(originalPairs);
+        Collections.shuffle(shuffled);
+        rightTranslations.clear();
+        rightTranslations.addAll(shuffled);
+
+        // Сбрасываем выбор
+        selectedLeftPosition = -1;
+
+        // Уведомляем слушателя
+        listener.onNextLevel();
+    }
+
     public List<WordPair> getLeftWords() { return leftWords; }
     public List<WordPair> getRightTranslations() { return rightTranslations; }
 }
