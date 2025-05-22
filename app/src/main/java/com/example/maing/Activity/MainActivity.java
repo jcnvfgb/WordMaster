@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ConstraintLayout btn1, btn2, btn3, btn4, btn5;
+    TextView textView;
     DatabaseHelper dbHelper;
     private static final int PICK_FILE_REQUEST = 1;
 
@@ -93,6 +95,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, WikiPage.class));
+            }
+        });
+
+        textView = findViewById(R.id.textView);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ViewStatistics.class);
+                startActivity(intent);
             }
         });
     }

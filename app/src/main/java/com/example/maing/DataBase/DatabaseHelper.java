@@ -108,9 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         + COLUMN_SET_NAME + " TEXT NOT NULL, "
                         + COLUMN_CORRECT + " INTEGER DEFAULT 0, "
                         + COLUMN_INCORRECT + " INTEGER DEFAULT 0, "
-                        + COLUMN_SKIPPED + " INTEGER DEFAULT 0, "
-                        + "FOREIGN KEY (" + COLUMN_SET_NAME + ") "
-                        + "REFERENCES " + TABLE_SETS + "(" + COLUMN_SET_NAME + ")"
+                        + COLUMN_SKIPPED + " INTEGER DEFAULT 0 "
                         + ");";
 
         db.execSQL(CREATE_STATS_TABLE);
